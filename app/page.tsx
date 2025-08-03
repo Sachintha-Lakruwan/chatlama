@@ -9,27 +9,26 @@ import { FaArrowCircleUp } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
 import UserMessage from "@/components/user-message";
 import AIMessage from "@/components/ai-message";
+import { askOllama } from "@/lib/askOllama";
 
 export default function Home() {
-  function handleSubmit() {
+  async function handleSubmit() {
     if (newChat) {
       setNewChat(false);
     }
+    const response = await askOllama(message);
+    console.log(response);
     setMessage("");
   }
   const [newChat, setNewChat] = useState<boolean>(true);
   const [message, setMessage] = useState<string>("");
+
   return (
     <section className="flex flex-col items-center gap-4 mx-auto max-w-[850px]">
       <div className=" w-full flex flex-col gap-8 max-w-[750px] pb-[30dvh]">
         {!newChat && (
           <>
-            <UserMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
-            <AIMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
-            <UserMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
-            <AIMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
-            <UserMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
-            <AIMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
+            <UserMessage content="" />
           </>
         )}
       </div>
