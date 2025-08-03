@@ -10,6 +10,7 @@ import { CiCirclePlus } from "react-icons/ci";
 import UserMessage from "@/components/user-message";
 import AIMessage from "@/components/ai-message";
 import { askOllama, clearMemory } from "@/lib/askOllama";
+import { getRandomWelcomePhrase } from "@/utils/welcomePhrase";
 
 interface ChatMessage {
   type: "user" | "ai";
@@ -21,13 +22,16 @@ export default function Home() {
   const [message, setMessage] = useState<string>(""); // User input
   const [generating, setGenerating] = useState<boolean>(false); // Generating flag
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]); // Chat history
+  const [welcomePhrase, setWelcomePhrase] = useState<string>(
+    getRandomWelcomePhrase()
+  );
 
   async function handleSubmit() {
+    if (!message.trim()) return;
+
     if (newChat) {
       setNewChat(false);
     }
-
-    if (!message.trim()) return;
 
     // Add user message to chat history
     const userMessage: ChatMessage = { type: "user", content: message };
@@ -48,6 +52,7 @@ export default function Home() {
     setChatHistory([]); // Clear chat history
     setNewChat(true); // Reset to new chat state
     setMessage(""); // Clear input
+    setWelcomePhrase(getRandomWelcomePhrase());
   }
 
   return (
@@ -64,7 +69,12 @@ export default function Home() {
                 )}
               </div>
             ))}
-            {generating && <AIMessage content="Thinking..." />}
+            {generating && (
+              <span className="relative flex size-3">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-foreground opacity-75"></span>
+                <span className="relative inline-flex size-3 rounded-full bg-foreground"></span>
+              </span>
+            )}
           </div>
         )}
       </div>
@@ -77,7 +87,7 @@ export default function Home() {
         <h1
           className={`text-4xl relative z-10 font-bold text-center mb-8 ${!newChat ? "hidden" : "block"}`}
         >
-          Ready when you are.
+          {welcomePhrase}
         </h1>
         <div className=" bg-default-200 p-6 py-5 rounded-4xl drop-shadow-xl">
           <Textarea
