@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
@@ -12,8 +14,12 @@ import NextLink from "next/link";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 import { SearchIcon } from "@/components/icons";
+import DrawerComponent from "./drawer";
+import { useState } from "react";
 
 export const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const searchInput = (
     <Input
       aria-label="Search"
@@ -60,6 +66,7 @@ export const Navbar = () => {
         <ThemeSwitch />
         <NavbarMenuToggle />
       </NavbarContent>
+      <DrawerComponent isOpen={isOpen} setIsOpen={setIsOpen} />
 
       <NavbarMenu>{searchInput}</NavbarMenu>
     </HeroUINavbar>
