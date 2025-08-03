@@ -7,26 +7,40 @@ import { RiVoiceAiFill } from "react-icons/ri";
 import { TbTools } from "react-icons/tb";
 import { FaArrowCircleUp } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
+import UserMessage from "@/components/user-message";
+import AIMessage from "@/components/ai-message";
 
 export default function Home() {
   function handleSubmit() {
     if (newChat) {
       setNewChat(false);
     }
+    setMessage("");
   }
   const [newChat, setNewChat] = useState<boolean>(true);
   const [message, setMessage] = useState<string>("");
   return (
-    <section className="flex flex-col items-center gap-4 py-8 md:py-12 mx-auto max-w-[850px]">
-      <div>{/* CHAT */}</div>
+    <section className="flex flex-col items-center gap-4 mx-auto max-w-[850px]">
+      <div className=" w-full flex flex-col gap-8 max-w-[750px] pb-[30dvh]">
+        {!newChat && (
+          <>
+            <UserMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
+            <AIMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
+            <UserMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
+            <AIMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
+            <UserMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
+            <AIMessage content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in" />
+          </>
+        )}
+      </div>
 
       <div
         className={`fixed mx-auto w-full max-w-[750px] transition-all duration-300 ease-in-out ${
           newChat ? "bottom-2/5" : "bottom-12"
-        }`}
+        } before:content-[''] before:absolute before:inset-0 before:bg-background before:rounded-4xl before:pb-[50vh]`}
       >
         <h1
-          className={`text-4xl font-bold text-center mb-8 ${!newChat ? "hidden" : "block"}`}
+          className={`text-4xl relative z-10 font-bold text-center mb-8 ${!newChat ? "hidden" : "block"}`}
         >
           Ready when you are.
         </h1>
