@@ -30,7 +30,7 @@ export default function DrawerComponent({
           {(onClose) => (
             <>
               <DrawerHeader className="flex flex-col gap-1">
-                ChatLama
+                LamaChat
               </DrawerHeader>
               <DrawerBody></DrawerBody>
               {/* <DrawerFooter>
