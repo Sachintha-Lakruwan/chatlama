@@ -1,7 +1,7 @@
 "use client";
 
 import { Textarea } from "@heroui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaMicrophone } from "react-icons/fa";
 import { RiVoiceAiFill } from "react-icons/ri";
 import { TbTools } from "react-icons/tb";
@@ -9,27 +9,63 @@ import { FaArrowCircleUp } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
 import UserMessage from "@/components/user-message";
 import AIMessage from "@/components/ai-message";
-import { askOllama } from "@/lib/askOllama";
+import { askOllama, clearMemory } from "@/lib/askOllama";
+
+interface ChatMessage {
+  type: "user" | "ai";
+  content: string;
+}
 
 export default function Home() {
+  const [newChat, setNewChat] = useState<boolean>(true); // New chat flag
+  const [message, setMessage] = useState<string>(""); // User input
+  const [generating, setGenerating] = useState<boolean>(false); // Generating flag
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]); // Chat history
+
   async function handleSubmit() {
     if (newChat) {
       setNewChat(false);
     }
-    const response = await askOllama(message);
-    console.log(response);
-    setMessage("");
+
+    if (!message.trim()) return;
+
+    // Add user message to chat history
+    const userMessage: ChatMessage = { type: "user", content: message };
+    setChatHistory((prev) => [...prev, userMessage]);
+
+    setGenerating(true);
+    const response = await askOllama({ prompt: message, setMessage });
+    setGenerating(false);
+
+    // Add AI response to chat history
+    const aiMessage: ChatMessage = { type: "ai", content: response };
+    setChatHistory((prev) => [...prev, aiMessage]);
   }
-  const [newChat, setNewChat] = useState<boolean>(true);
-  const [message, setMessage] = useState<string>("");
+
+  // Function to start a new chat
+  async function startNewChat() {
+    await clearMemory(); // Clear the buffer memory
+    setChatHistory([]); // Clear chat history
+    setNewChat(true); // Reset to new chat state
+    setMessage(""); // Clear input
+  }
 
   return (
     <section className="flex flex-col items-center gap-4 mx-auto max-w-[850px]">
       <div className=" w-full flex flex-col gap-8 max-w-[750px] pb-[30dvh]">
         {!newChat && (
-          <>
-            <UserMessage content="" />
-          </>
+          <div className="flex flex-col gap-4">
+            {chatHistory.map((msg, index) => (
+              <div key={index}>
+                {msg.type === "user" ? (
+                  <UserMessage content={msg.content} />
+                ) : (
+                  <AIMessage content={msg.content} />
+                )}
+              </div>
+            ))}
+            {generating && <AIMessage content="Thinking..." />}
+          </div>
         )}
       </div>
 
@@ -60,7 +96,7 @@ export default function Home() {
           />
           <div className=" w-full pt-4 flex justify-between">
             <div className=" flex gap-6 items-center">
-              <div className=" text-2xl">
+              <div className=" text-2xl cursor-pointer" onClick={startNewChat}>
                 <CiCirclePlus />
               </div>
               <div className=" flex items-center gap-2">
