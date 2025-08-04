@@ -80,7 +80,7 @@ export default function Home() {
       </div>
 
       <div
-        className={`fixed mx-auto w-full max-w-[750px] transition-all duration-300 ease-in-out ${
+        className={`fixed mx-4 w-11/12 max-w-[750px] transition-all duration-300 ease-in-out ${
           newChat ? "bottom-2/5" : "bottom-12"
         } before:content-[''] before:absolute before:inset-0 before:bg-background before:rounded-4xl before:pb-[50vh]`}
       >
