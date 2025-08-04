@@ -17,10 +17,11 @@ import { SearchIcon } from "@/components/icons";
 import DrawerComponent from "./drawer";
 import { useState } from "react";
 import { FaHistory } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const router = useRouter();
   const searchInput = (
     <Input
       aria-label="Search"
@@ -47,6 +48,11 @@ export const Navbar = () => {
       return setIsOpen(false);
     }
     return setIsOpen(true);
+  }
+
+  function handleChatClick(chatId: string) {
+    setIsOpen(false);
+    router.push(`/?chatId=${chatId}`);
   }
 
   return (
@@ -85,7 +91,11 @@ export const Navbar = () => {
         <NavbarMenuToggle />
       </NavbarContent>
 
-      <DrawerComponent isOpen={isOpen} setIsOpen={setIsOpen} />
+      <DrawerComponent
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        handleChatClick={handleChatClick}
+      />
 
       <NavbarMenu>{searchInput}</NavbarMenu>
     </HeroUINavbar>
