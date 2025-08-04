@@ -2,6 +2,7 @@
 
 import { Textarea } from "@heroui/input";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { FaMicrophone } from "react-icons/fa";
 import { RiVoiceAiFill } from "react-icons/ri";
 import { TbTools } from "react-icons/tb";
@@ -11,6 +12,7 @@ import UserMessage from "@/components/user-message";
 import AIMessage from "@/components/ai-message";
 import { askOllama, clearMemory } from "@/lib/askOllama";
 import { getRandomWelcomePhrase } from "@/utils/welcomePhrase";
+import { addMessageToChat } from "@/lib/db-helpers";
 
 interface ChatMessage {
   type: "user" | "ai";
@@ -18,6 +20,8 @@ interface ChatMessage {
 }
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const [chatId, setChatId] = useState<string>("");
   const [newChat, setNewChat] = useState<boolean>(true); // New chat flag
   const [message, setMessage] = useState<string>(""); // User input
   const [generating, setGenerating] = useState<boolean>(false); // Generating flag
@@ -25,6 +29,17 @@ export default function Home() {
   const [welcomePhrase, setWelcomePhrase] = useState<string>(
     getRandomWelcomePhrase()
   );
+
+  // Check for chatId parameter and update state if it exists
+  useEffect(() => {
+    const chatIdParam = searchParams.get("chatId");
+    if (chatIdParam) {
+      setChatId(chatIdParam);
+      setNewChat(false);
+    } else {
+      setChatId(crypto.randomUUID());
+    }
+  }, [searchParams]);
 
   async function handleSubmit() {
     if (!message.trim()) return;
@@ -36,9 +51,11 @@ export default function Home() {
     // Add user message to chat history
     const userMessage: ChatMessage = { type: "user", content: message };
     setChatHistory((prev) => [...prev, userMessage]);
+    await addMessageToChat(chatId, { type: "user", content: message });
 
     setGenerating(true);
     const response = await askOllama({ prompt: message, setMessage });
+    await addMessageToChat(chatId, { type: "ai", content: response });
     setGenerating(false);
 
     // Add AI response to chat history
@@ -50,6 +67,7 @@ export default function Home() {
   async function startNewChat() {
     await clearMemory(); // Clear the buffer memory
     setChatHistory([]); // Clear chat history
+    setChatId(crypto.randomUUID()); // Generate a new chatId
     setNewChat(true); // Reset to new chat state
     setMessage(""); // Clear input
     setWelcomePhrase(getRandomWelcomePhrase());
