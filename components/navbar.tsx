@@ -19,7 +19,7 @@ import { useState } from "react";
 import { FaHistory } from "react-icons/fa";
 
 export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const searchInput = (
     <Input
@@ -53,10 +53,10 @@ export const Navbar = () => {
     <HeroUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-1" href="/">
-            {/* <OllamaIcon /> */}
-            <p className="font-bold text-xl text-inherit ">LamaChat</p>
-          </NextLink>
+          {/* <NextLink className="flex justify-start items-center gap-1" href="/"> */}
+          {/* <OllamaIcon /> */}
+          <p className="font-bold text-xl text-inherit ">LamaChat</p>
+          {/* </NextLink> */}
         </NavbarBrand>
       </NavbarContent>
 
