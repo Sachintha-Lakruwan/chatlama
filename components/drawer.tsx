@@ -25,6 +25,7 @@ export default function DrawerComponent({
         radius="none"
         size="xs"
         onOpenChange={setIsOpen}
+        hideCloseButton={true}
       >
         <DrawerContent>
           {(onClose) => (

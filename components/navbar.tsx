@@ -16,9 +16,10 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { SearchIcon } from "@/components/icons";
 import DrawerComponent from "./drawer";
 import { useState } from "react";
+import { FaHistory } from "react-icons/fa";
 
 export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const searchInput = (
     <Input
@@ -41,6 +42,13 @@ export const Navbar = () => {
     />
   );
 
+  function historyButton() {
+    if (isOpen) {
+      return setIsOpen(false);
+    }
+    return setIsOpen(true);
+  }
+
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -59,13 +67,24 @@ export const Navbar = () => {
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
         </NavbarItem>
+        <NavbarItem className="hidden sm:flex gap-2">
+          <FaHistory
+            className="text-default-400 text-xl cursor-pointer"
+            onClick={historyButton}
+          />
+        </NavbarItem>
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
         <ThemeSwitch />
+        <FaHistory
+          className="text-default-400 text-xl cursor-pointer"
+          onClick={historyButton}
+        />
         <NavbarMenuToggle />
       </NavbarContent>
+
       <DrawerComponent isOpen={isOpen} setIsOpen={setIsOpen} />
 
       <NavbarMenu>{searchInput}</NavbarMenu>
