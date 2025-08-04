@@ -17,7 +17,8 @@ const chatbotPhrases = [
 ];
 
 function getRandomWelcomePhrase() {
-  return chatbotPhrases[Math.floor(Math.random() * chatbotPhrases.length)];
+  return "Ready whenever you are.";
+  // return chatbotPhrases[Math.floor(Math.random() * chatbotPhrases.length)];
 }
 
 export { getRandomWelcomePhrase };
