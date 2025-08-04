@@ -46,5 +46,5 @@ export async function clearMemory(): Promise<void> {
   await memory.clear();
 }
 
-// Export memory for external access if needed
-export { memory };
+// Export memory and chain for external access if needed
+export { memory, chain };

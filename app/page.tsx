@@ -12,9 +12,9 @@ import UserMessage from "@/components/user-message";
 import AIMessage from "@/components/ai-message";
 import { askOllama, clearMemory } from "@/lib/askOllama";
 import { getRandomWelcomePhrase } from "@/utils/welcomePhrase";
-import { addMessageToChat } from "@/lib/db-helpers";
+import { addMessageToChat, getChatHistory } from "@/lib/db-helpers";
 
-interface ChatMessage {
+interface aMessage {
   type: "user" | "ai";
   content: string;
 }
@@ -25,20 +25,26 @@ export default function Home() {
   const [newChat, setNewChat] = useState<boolean>(true); // New chat flag
   const [message, setMessage] = useState<string>(""); // User input
   const [generating, setGenerating] = useState<boolean>(false); // Generating flag
-  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]); // Chat history
+  const [chatHistory, setChatHistory] = useState<aMessage[]>([]); // Chat history
   const [welcomePhrase, setWelcomePhrase] = useState<string>(
     getRandomWelcomePhrase()
   );
 
   // Check for chatId parameter and update state if it exists
   useEffect(() => {
-    const chatIdParam = searchParams.get("chatId");
-    if (chatIdParam) {
-      setChatId(chatIdParam);
-      setNewChat(false);
-    } else {
-      setChatId(crypto.randomUUID());
-    }
+    const loadChatHistory = async () => {
+      const chatIdParam = searchParams.get("chatId");
+      if (chatIdParam) {
+        setChatId(chatIdParam);
+        setNewChat(false);
+        await getChatHistory(chatIdParam, setChatHistory);
+      } else {
+        setChatId(crypto.randomUUID());
+        setNewChat(true);
+      }
+    };
+
+    loadChatHistory();
   }, [searchParams]);
 
   async function handleSubmit() {
@@ -49,7 +55,7 @@ export default function Home() {
     }
 
     // Add user message to chat history
-    const userMessage: ChatMessage = { type: "user", content: message };
+    const userMessage: aMessage = { type: "user", content: message };
     setChatHistory((prev) => [...prev, userMessage]);
     await addMessageToChat(chatId, { type: "user", content: message });
 
@@ -59,7 +65,7 @@ export default function Home() {
     setGenerating(false);
 
     // Add AI response to chat history
-    const aiMessage: ChatMessage = { type: "ai", content: response };
+    const aiMessage: aMessage = { type: "ai", content: response };
     setChatHistory((prev) => [...prev, aiMessage]);
   }
 
