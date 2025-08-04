@@ -13,6 +13,14 @@ import AIMessage from "@/components/ai-message";
 import { askOllama, clearMemory } from "@/lib/askOllama";
 import { getRandomWelcomePhrase } from "@/utils/welcomePhrase";
 import { addMessageToChat, getChatHistory } from "@/lib/db-helpers";
+import { Tooltip } from "@heroui/tooltip";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownSection,
+  DropdownItem,
+} from "@heroui/dropdown";
 
 interface aMessage {
   type: "user" | "ai";
@@ -79,6 +87,10 @@ export default function Home() {
     setWelcomePhrase(getRandomWelcomePhrase());
   }
 
+  function handleUploadPDF() {
+    console.log("Uploading PDF");
+  }
+
   return (
     <section className="flex flex-col items-center gap-4 mx-auto max-w-[850px]">
       <div className=" w-full flex flex-col gap-8 max-w-[750px] pb-[30dvh]">
@@ -130,10 +142,21 @@ export default function Home() {
           />
           <div className=" w-full pt-4 flex justify-between">
             <div className=" flex gap-6 items-center">
-              <div className=" text-2xl cursor-pointer" onClick={startNewChat}>
-                <CiCirclePlus />
+              <div className=" text-2xl cursor-pointer">
+                <Dropdown>
+                  <DropdownTrigger>
+                    <CiCirclePlus />
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="Static Actions">
+                    <DropdownItem onClick={handleUploadPDF} key="pdf">
+                      Attach PDF
+                    </DropdownItem>
+                    <DropdownItem key="image">Attach Image</DropdownItem>
+                    <DropdownItem key="voice">Attach Voice</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               </div>
-              <div className=" flex items-center gap-2">
+              <div className=" flex items-center gap-2 cursor-not-allowed">
                 <TbTools className=" text-xl" />
                 <div className=" text-md">Tools</div>
               </div>

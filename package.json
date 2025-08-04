@@ -23,6 +23,7 @@
     "@heroui/switch": "2.2.22",
     "@heroui/system": "2.4.20",
     "@heroui/theme": "2.4.20",
+    "@heroui/tooltip": "^2.2.21",
     "@langchain/community": "^0.3.49",
     "@react-aria/overlays": "^3.28.0",
     "@react-aria/ssr": "3.9.10",
