@@ -1,4 +1,17 @@
+
 # Next.js & HeroUI Template
+
+<p align="center">
+	<img src="ss-dark.png" alt="Dark Theme Screenshot" width="600" />
+	<br />
+	<em>Dark Theme</em>
+</p>
+
+<p align="center">
+	<img src="ss-light.png" alt="Light Theme Screenshot" width="600" />
+	<br />
+	<em>Light Theme</em>
+</p>
 
 This is a template for creating applications using Next.js 14 (app directory) and HeroUI (v2).
 

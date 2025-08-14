@@ -13,7 +13,6 @@ import AIMessage from "@/components/ai-message";
 import { askOllama, clearMemory } from "@/lib/askOllama";
 import { getRandomWelcomePhrase } from "@/utils/welcomePhrase";
 import { addMessageToChat, getChatHistory } from "@/lib/db-helpers";
-import { Tooltip } from "@heroui/tooltip";
 import {
   Dropdown,
   DropdownTrigger,
@@ -21,6 +20,7 @@ import {
   DropdownSection,
   DropdownItem,
 } from "@heroui/dropdown";
+import { MemoryVectorStore } from "langchain/vectorstores/memory";
 
 interface aMessage {
   type: "user" | "ai";
@@ -87,8 +87,11 @@ export default function Home() {
     setWelcomePhrase(getRandomWelcomePhrase());
   }
 
-  function handleUploadPDF() {
-    console.log("Uploading PDF");
+  async function handleUploadPDF() {
+    const vectorStore: MemoryVectorStore = await createLocalIndex({
+      path: "/Users/admin/Desktop/sample.txt",
+    });
+    console.log(vectorStore);
   }
 
   return (
